@@ -1,0 +1,17 @@
+altgraph==0.17.4
+certifi==2023.7.22
+charset-normalizer==3.3.2
+idna==3.4
+macholib==1.16.3
+modulegraph==0.19.6
+packaging==23.2
+pefile==2023.2.7
+py2app==0.28.6
+pyinstaller==6.1.0
+pyinstaller-hooks-contrib==2023.10
+PySimpleGUI==4.60.5
+python-dotenv==1.0.0
+pywin32-ctypes==0.2.2
+requests==2.31.0
+setuptools==68.2.2
+urllib3==2.0.7
