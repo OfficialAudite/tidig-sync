@@ -28,6 +28,12 @@ This script was written in Python 3.12, and compatibility with previous versions
     pip install -r requirements.txt
     ```
 
-This command installs all the necessary dependencies as specified in the `requirements.txt` file.
+3. Run the main script:
 
-After setting up the environment, you can run the script as per the usage instructions provided.
+    ```bash
+    python main.py
+    ```
+
+This command will start the script. Follow the on-screen prompts in the application to enter your Toggl credentials and retrieve the time tracking data.
+
+After setting up the environment and running the script, follow any additional usage instructions provided within the application itself.
