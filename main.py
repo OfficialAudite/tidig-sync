@@ -2,7 +2,7 @@ import requests
 import re
 from base64 import b64encode
 import PySimpleGUI as sg
-from datetime import datetime
+from datetime import datetime, timedelta
 
 pattern = re.compile(r'\((.*?)\)')
 
@@ -33,9 +33,13 @@ def get_data_from_api(url, headers):
         print(f"Failed to retrieve data: {response.status_code} {response.text}")
         return None
 
-def construct_data(email, password):
+def construct_data(email, password, datefrom, dateto):
     headers = create_auth_header(email, password)
-    timedata = get_data_from_api('https://api.track.toggl.com/api/v9/me/time_entries', headers)
+    # is datefrom and dateto empty
+    if not datefrom or not dateto:
+        timedata = get_data_from_api('https://api.track.toggl.com/api/v9/me/time_entries', headers)
+    else:
+        timedata = get_data_from_api(f'https://api.track.toggl.com/api/v9/me/time_entries?start_date={datefrom}&end_date={dateto}', headers)
     
     if not timedata:
         return None
@@ -78,10 +82,30 @@ buttons = [
 ]
 
 layout = [  
-    [sg.Text('Toggl export for import into tidig @ consid!', font='_ 13 bold', size=(40,2), justification='c', expand_x=True)],
-    [sg.Text('Email', expand_x=True), sg.InputText()],
-    [sg.Text('Password', expand_x=True), sg.InputText(password_char='*')],
-    [ColumnFixedSize(buttons, size=(500, 70), element_justification='c')]
+    [
+        sg.Text('Toggl export for import into tidig @ consid!', font='_ 13 bold', size=(40,2), justification='c', expand_x=True)
+    ],
+    [
+        sg.Text('Email', expand_x=True), 
+        sg.InputText()
+    ],
+    [
+        sg.Text('Password', expand_x=True), 
+        sg.InputText(password_char='*')
+    ],
+    [
+        sg.Text('Date From', expand_x=True), 
+        sg.InputText(key='date_from', readonly=True, size=(20,1)),  # This field will hold the date from the calendar
+        sg.CalendarButton('Select Date', close_when_date_chosen=True, target='date_from', format='%Y-%m-%d')
+    ],
+    [
+        sg.Text('Date To', expand_x=True), 
+        sg.InputText(key='date_to', readonly=True, size=(20,1)),  # This field will hold the date to from the calendar
+        sg.CalendarButton('Select Date', close_when_date_chosen=True, target='date_to', format='%Y-%m-%d')
+    ],
+    [
+        ColumnFixedSize(buttons, size=(500, 70), element_justification='c')
+    ]
 ]
 
 window = sg.Window('TIDIGTOGGLE', layout=layout, font="Helvetica 12")
@@ -90,15 +114,29 @@ while True:
     event, values = window.read()
     if event in (sg.WIN_CLOSED, 'Cancel'):
         break
-    if event == 'Get Data':
+    if event == 'Get Data':        
         email, password = values[0], values[1]
+        datefrom, dateto = values['date_from'], values['date_to']
+        
+        if not datefrom or not dateto:
+            sg.popup_error('You need to specify both a start and end date.', title='Date Error')
+            continue
+        
+        date_format = "%Y-%m-%d"
+        dateto_datetime = datetime.strptime(dateto, date_format)
+        dateto_datetime += timedelta(days=1)
+        dateto = dateto_datetime.strftime(date_format)
+        
         try:
-            data = construct_data(email, password)
+            data = construct_data(email, password, datefrom, dateto)
+            
             if data:
-                save_to_csv(data)  # This will save the data into 'output.csv'
+                save_to_csv(data)
                 sg.popup_scrolled(data, title='Retrieved Data')
             else:
                 sg.popup_error('No data to display.')
+        except ValueError:
+            sg.popup_error('Invalid date format. Please use YYYY-MM-DD format.', title='Date Format Error')
         except Exception as e:
             sg.popup_error(f'An error occurred: {e}', title='Error')
 
