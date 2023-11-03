@@ -2,6 +2,7 @@ import requests, re, os
 from base64 import b64encode
 import PySimpleGUI as sg
 from datetime import datetime, timedelta
+import pickle
 
 pattern = re.compile(r'\((.*?)\)')
 
@@ -76,11 +77,15 @@ def construct_data(email, password, datefrom, dateto):
 def ColumnFixedSize(layout, size=(None, None), *args, **kwargs):
     return sg.Column([[sg.Column([[sg.Sizer(0,size[1]-1), sg.Column([[sg.Sizer(size[0]-2,0)]] + layout, *args, **kwargs, pad=(0,0))]], *args, **kwargs)]],pad=(0,0))
 
-account = ""
-
-if os.path.exists('account.txt'):
-    with open('account.txt', 'r') as f:
-        account = f.read()
+credentials_file = 'credentials.dat'
+if os.path.exists(credentials_file):
+    with open(credentials_file, 'rb') as f:
+        account_data = pickle.load(f)
+    email = account_data.get('email', '')
+    password = account_data.get('password', '')
+else:
+    email = ''
+    password = ''
 
 sg.theme("DarkGrey13")
 
@@ -94,11 +99,11 @@ layout = [
     ],
     [
         sg.Text('Email', expand_x=True), 
-        sg.InputText(default_text=account)
+        sg.InputText(default_text=email)
     ],
     [
         sg.Text('Password', expand_x=True), 
-        sg.InputText(password_char='*')
+        sg.InputText(default_text=password,password_char='*')
     ],
     [
         sg.Text('Date From', expand_x=True), 
@@ -129,8 +134,8 @@ while True:
             sg.popup_error('You need to specify both an email and password.', title='Login Error')
             continue
         
-        with open('account.txt', 'w') as f:
-            f.write(str(email))
+        with open(credentials_file, 'wb') as f:
+            pickle.dump({'email': email, 'password': password}, f)
         
         if not datefrom or not dateto:
             sg.popup_error('You need to specify both a start and end date.', title='Date Error')
