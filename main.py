@@ -117,6 +117,9 @@ layout = [
     ],
     [
         ColumnFixedSize(buttons, size=(500, 70), element_justification='c')
+    ],
+    [
+        sg.Text('Created by: @officialaudite', font='_ 10', size=(40,1), justification='c', expand_x=True)
     ]
 ]
 
