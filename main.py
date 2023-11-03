@@ -88,11 +88,13 @@ else:
     email = ''
     password = ''
 
-sg.theme("DarkGrey13")
+sg.theme("DarkBlack1")
 
 buttons = [
     [sg.Button('Get Data'), sg.Button('Cancel')]
 ]
+
+today = datetime.now().strftime('%Y-%m-%d')
 
 layout = [  
     [
@@ -111,13 +113,13 @@ layout = [
     ],
     [
         sg.Text('Date From', expand_x=True), 
-        sg.InputText(key='date_from', readonly=True, size=(20,1), disabled_readonly_text_color="#000"),  # This field will hold the date from the calendar
-        sg.CalendarButton('Select Date', no_titlebar=False, title="Select Date", close_when_date_chosen=True, target='date_from', format='%Y-%m-%d')
+        sg.InputText(key='date_from', readonly=True, size=(20,1), disabled_readonly_text_color="#000", default_text=today ),  # This field will hold the date from the calendar
+        sg.CalendarButton('Select Date', no_titlebar=False, title="Select Date", close_when_date_chosen=True, target='date_from', format='%Y-%m-%d', default_date_m_d_y=(datetime.now().month, datetime.now().day, datetime.now().year))
     ],
     [
         sg.Text('Date To', expand_x=True), 
-        sg.InputText(key='date_to', readonly=True, size=(20,1), disabled_readonly_text_color="#000"),  # This field will hold the date to from the calendar
-        sg.CalendarButton('Select Date', no_titlebar=False, title="Select Date", close_when_date_chosen=True, target='date_to', format='%Y-%m-%d')
+        sg.InputText(key='date_to', readonly=True, size=(20,1), disabled_readonly_text_color="#000", default_text=today),  # This field will hold the date to from the calendar
+        sg.CalendarButton('Select Date', no_titlebar=False, title="Select Date", close_when_date_chosen=True, target='date_to', format='%Y-%m-%d', default_date_m_d_y=(datetime.now().month, datetime.now().day, datetime.now().year))
     ],
     [
         ColumnFixedSize(buttons, size=(500, 70), element_justification='c')
