@@ -77,6 +77,8 @@ def construct_data(email, password, datefrom, dateto):
 def ColumnFixedSize(layout, size=(None, None), *args, **kwargs):
     return sg.Column([[sg.Column([[sg.Sizer(0,size[1]-1), sg.Column([[sg.Sizer(size[0]-2,0)]] + layout, *args, **kwargs, pad=(0,0))]], *args, **kwargs)]],pad=(0,0))
 
+sg.theme("DarkGrey13")
+
 buttons = [
     [sg.Button('Get Data'), sg.Button('Cancel')]
 ]
@@ -95,12 +97,12 @@ layout = [
     ],
     [
         sg.Text('Date From', expand_x=True), 
-        sg.InputText(key='date_from', readonly=True, size=(20,1)),  # This field will hold the date from the calendar
+        sg.InputText(key='date_from', readonly=True, size=(20,1), disabled_readonly_text_color="#000"),  # This field will hold the date from the calendar
         sg.CalendarButton('Select Date', close_when_date_chosen=True, target='date_from', format='%Y-%m-%d')
     ],
     [
         sg.Text('Date To', expand_x=True), 
-        sg.InputText(key='date_to', readonly=True, size=(20,1)),  # This field will hold the date to from the calendar
+        sg.InputText(key='date_to', readonly=True, size=(20,1), disabled_readonly_text_color="#000"),  # This field will hold the date to from the calendar
         sg.CalendarButton('Select Date', close_when_date_chosen=True, target='date_to', format='%Y-%m-%d')
     ],
     [
