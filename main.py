@@ -1,5 +1,4 @@
-import requests
-import re
+import requests, re, os
 from base64 import b64encode
 import PySimpleGUI as sg
 from datetime import datetime, timedelta
@@ -77,6 +76,12 @@ def construct_data(email, password, datefrom, dateto):
 def ColumnFixedSize(layout, size=(None, None), *args, **kwargs):
     return sg.Column([[sg.Column([[sg.Sizer(0,size[1]-1), sg.Column([[sg.Sizer(size[0]-2,0)]] + layout, *args, **kwargs, pad=(0,0))]], *args, **kwargs)]],pad=(0,0))
 
+account = ""
+
+if os.path.exists('account.txt'):
+    with open('account.txt', 'r') as f:
+        account = f.read()
+
 sg.theme("DarkGrey13")
 
 buttons = [
@@ -89,7 +94,7 @@ layout = [
     ],
     [
         sg.Text('Email', expand_x=True), 
-        sg.InputText()
+        sg.InputText(default_text=account)
     ],
     [
         sg.Text('Password', expand_x=True), 
@@ -123,6 +128,9 @@ while True:
         if not email or not password:
             sg.popup_error('You need to specify both an email and password.', title='Login Error')
             continue
+        
+        with open('account.txt', 'w') as f:
+            f.write(str(email))
         
         if not datefrom or not dateto:
             sg.popup_error('You need to specify both a start and end date.', title='Date Error')
