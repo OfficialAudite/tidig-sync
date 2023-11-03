@@ -37,3 +37,7 @@ This script was written in Python 3.12, and compatibility with previous versions
 This command will start the script. Follow the on-screen prompts in the application to enter your Toggl credentials and retrieve the time tracking data.
 
 After setting up the environment and running the script, follow any additional usage instructions provided within the application itself.
+
+## Disclaimer
+
+This tool is not affiliated with Toggl or Tidig or Consid and has been created for convenience. Please ensure you have the right to export and manipulate the data as this tool facilitates.
