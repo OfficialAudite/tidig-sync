@@ -118,6 +118,10 @@ while True:
         email, password = values[0], values[1]
         datefrom, dateto = values['date_from'], values['date_to']
         
+        if not email or not password:
+            sg.popup_error('You need to specify both an email and password.', title='Login Error')
+            continue
+        
         if not datefrom or not dateto:
             sg.popup_error('You need to specify both a start and end date.', title='Date Error')
             continue
