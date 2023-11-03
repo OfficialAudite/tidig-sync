@@ -2,6 +2,9 @@
 
 This tool is designed to export time tracking data from Toggl and format it for import into TIDIG, a time tracking and management tool used by Consid.
 
+## Web version of this tool
+You can find the web version of this tool here: [tidig-sync-web](https://github.com/OfficialAudite/tidig-sync-web)
+
 ## Features
 
 - Retrieve time entries from Toggl API
