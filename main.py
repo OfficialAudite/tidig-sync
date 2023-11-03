@@ -133,8 +133,8 @@ while True:
     event, values = window.read()
     if event in (sg.WIN_CLOSED, 'Cancel'):
         break
-    if event == 'Get Data':        
-        email, password = values[0], values[1]
+    if event == 'Get Data':
+        email, password = values[1], values[2]
         datefrom, dateto = values['date_from'], values['date_to']
         
         if not email or not password:
