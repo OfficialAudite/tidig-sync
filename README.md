@@ -36,11 +36,12 @@ This script was written in Python 3.12, and compatibility with previous versions
     ```bash
     python main.py
     ```
-4. Inside toggl you have to set up Clients & Projets as it is in Tidig. The title of the time is Description and inside ( ) you put in the task id from trello etc. And tags on times dictate what type of activity you are doing such as "programming". And that should be enough for tidigtoggle to parse data correctly.
-
+    
 This command will start the script. Follow the on-screen prompts in the application to enter your Toggl credentials and retrieve the time tracking data.
-
 After setting up the environment and running the script, follow any additional usage instructions provided within the application itself.
+
+## Toggl example
+![example](https://audite.dev/toggl-example.png)
 
 ## Disclaimer
 
